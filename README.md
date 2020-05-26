@@ -1,4 +1,5 @@
 # catan-tools
+Boost gameplay with card tracking, analytics, and planning tools.
 
 ## Project setup
 ```
