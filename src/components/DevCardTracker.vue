@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Development Card Tracker</h2>
+    <!-- Buttons to draw/return cards -->
     <h3>Draw cards</h3>
     <div class="draw-buttons">
       <ul>
@@ -9,21 +10,21 @@
         </li>
       </ul>
     </div>
+    <!-- Count of each card left in deck -->
     <h3>Left in deck:</h3>
     <ul>
-      <li>Knights: {{ cards.knight }}</li>
-      <li>Victory Points: {{ cards.victoryPoint }}</li>
-      <li>Road Building: {{ cards.roadBuilding }}</li>
-      <li>Year of Plenty: {{ cards.yearOfPlenty }}</li>
-      <li>Monopoly: {{ cards.monopoly }}</li>
+      <li
+        v-for="cardType in cardTypes"
+        :key="cardType"
+      >{{cardType | pluralize | title}}: {{cards[cardType]}}</li>
     </ul>
+    <!-- Probability of drawing each card -->
     <h3>Odds of drawing:</h3>
     <ul>
-      <li>Knight: {{ cards.knight/totalCards | probability }}</li>
-      <li>Victory Point: {{ cards.victoryPoint/totalCards | probability }}</li>
-      <li>Road Building: {{ cards.roadBuilding/totalCards | probability }}</li>
-      <li>Year of Plenty: {{ cards.yearOfPlenty/totalCards | probability }}</li>
-      <li>Monopoly: {{ cards.monopoly/totalCards | probability }}</li>
+      <li
+        v-for="cardType in cardTypes"
+        :key="cardType"
+      >{{cardType | title}}: {{ cards[cardType]/totalCards | probability }}</li>
     </ul>
   </div>
 </template>
@@ -31,6 +32,7 @@
 <script>
 import { DEFAULT_DEV_CARDS } from "../constants/defaults";
 import DevCardDrawButton from "./DevCardDrawButton";
+import { capitalCase } from "change-case";
 
 export default {
   name: "DevCardTracker",
@@ -61,6 +63,15 @@ export default {
   filters: {
     probability(value) {
       return `${(value * 100).toFixed()}%`;
+    },
+    pluralize(text) {
+      // only pluralise 'knights' and 'victory points'
+      return ["knight", "victorypoint"].indexOf(text.toLowerCase()) > -1
+        ? text + "s"
+        : text;
+    },
+    title(text) {
+      return capitalCase(text);
     }
   }
 };
