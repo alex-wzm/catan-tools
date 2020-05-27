@@ -7,8 +7,8 @@
         data-icon="octicon-star"
         data-size="large"
         aria-label="Star ntkme/github-buttons on GitHub"
-        >Star</github-button
-      >
+      >Star</github-button>
+      <p>v{{ currentVersion }}</p>
       <a href="https://vuejs.org/" target="_blank">
         <img height="50px" alt="Vue logo" src="../assets/logo.png" />
       </a>
@@ -22,6 +22,11 @@ import GithubButton from "vue-github-button";
 export default {
   name: "Home",
   components: { GithubButton },
+  data() {
+    return {
+      currentVersion: process.env.VUE_APP_VERSION
+    };
+  }
 };
 </script>
 
@@ -41,11 +46,15 @@ a {
   color: #42b983;
 }
 .footer {
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  bottom: 0%;
+  left: 0;
+  bottom: 0;
   width: 100%;
+}
+.footer > * {
+  margin: 0.5% 1%;
 }
 </style>
