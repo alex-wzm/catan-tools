@@ -1,5 +1,5 @@
 process.env.VUE_APP_VERSION = require("./package.json").version;
 
 module.exports = {
-  publicPath: "/catan-tools/",
+  publicPath: process.env.NODE_ENV === "production" ? "/catan-tools/" : "/",
 };
