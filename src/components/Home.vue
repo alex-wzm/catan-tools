@@ -1,6 +1,7 @@
 <template>
   <div>
     <h3>Catan Tools</h3>
+    <dev-card-tracker />
     <div class="footer">
       <github-button
         href="https://github.com/alex-wzm/catan-tools"
@@ -18,10 +19,11 @@
 
 <script>
 import GithubButton from "vue-github-button";
+import DevCardTracker from "./DevCardTracker";
 
 export default {
   name: "Home",
-  components: { GithubButton },
+  components: { GithubButton, DevCardTracker },
   data() {
     return {
       currentVersion: process.env.VUE_APP_VERSION
@@ -33,17 +35,6 @@ export default {
 <style scoped>
 h3 {
   margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 .footer {
   position: fixed;
