@@ -1,45 +1,46 @@
 <template>
   <div>
-    <h2>Withdraw cards</h2>
-    <div class="withdraw-buttons">
-      <!-- TODO: limit min to zero -->
-      <button v-on:click="drawCard('knight')">Knight</button>
-      <button v-on:click="drawCard('victoryPoint')">Victory Point</button>
-      <button v-on:click="drawCard('roadBuilding')">Road Building</button>
-      <button v-on:click="drawCard('yearOfPlenty')">Year of Plenty</button>
-      <button v-on:click="drawCard('monopoly')">Monopoly</button>
+    <h2>Development Card Tracker</h2>
+    <!-- Buttons to draw/return cards -->
+    <h3>Draw cards</h3>
+    <div class="draw-buttons">
+      <ul>
+        <li v-for="cardType in cardTypes" :key="cardType">
+          <dev-card-draw-button :cardType="cardType" v-on:draw="drawCard" v-on:undo="undoDraw" />
+        </li>
+      </ul>
     </div>
-    <h2>Left in deck:</h2>
+    <!-- Count of each card left in deck -->
+    <h3>Left in deck:</h3>
     <ul>
-      <li>Knights: {{ cards.knight }}</li>
-      <li>Victory Points: {{ cards.victoryPoint }}</li>
-      <li>Road Building: {{ cards.roadBuilding }}</li>
-      <li>Year of Plenty: {{ cards.yearOfPlenty }}</li>
-      <li>Monopoly: {{ cards.monopoly }}</li>
+      <li
+        v-for="cardType in cardTypes"
+        :key="cardType"
+      >{{cardType | pluralize | title}}: {{cards[cardType]}}</li>
     </ul>
-    <h2>Odds of drawing:</h2>
+    <!-- Probability of drawing each card -->
+    <h3>Odds of drawing:</h3>
     <ul>
-      <li>Knight: {{ cards.knight/totalCards | probability }}</li>
-      <li>Victory Point: {{ cards.victoryPoint/totalCards | probability }}</li>
-      <li>Road Building: {{ cards.roadBuilding/totalCards | probability }}</li>
-      <li>Year of Plenty: {{ cards.yearOfPlenty/totalCards | probability }}</li>
-      <li>Monopoly: {{ cards.monopoly/totalCards | probability }}</li>
+      <li
+        v-for="cardType in cardTypes"
+        :key="cardType"
+      >{{cardType | title}}: {{ cards[cardType]/totalCards | probability }}</li>
     </ul>
   </div>
 </template>
 
 <script>
+import { DEFAULT_DEV_CARDS } from "../constants/defaults";
+import DevCardDrawButton from "./DevCardDrawButton";
+import { capitalCase } from "change-case";
+
 export default {
   name: "DevCardTracker",
+  components: { DevCardDrawButton },
   data() {
     return {
-      cards: {
-        knight: 14,
-        victoryPoint: 5,
-        roadBuilding: 2,
-        yearOfPlenty: 2,
-        monopoly: 2
-      },
+      cards: { ...DEFAULT_DEV_CARDS }, // shallow copy
+      cardTypes: Object.keys(DEFAULT_DEV_CARDS),
       total: 25
     };
   },
@@ -51,26 +52,33 @@ export default {
   methods: {
     drawCard(card) {
       this.cards[card] = Math.max(this.cards[card] - 1, 0);
+    },
+    undoDraw(card) {
+      this.cards[card] = Math.min(
+        this.cards[card] + 1,
+        DEFAULT_DEV_CARDS[card]
+      );
     }
   },
   filters: {
     probability(value) {
       return `${(value * 100).toFixed()}%`;
+    },
+    pluralize(text) {
+      // only pluralise 'knights' and 'victory points'
+      return ["knight", "victorypoint"].indexOf(text.toLowerCase()) > -1
+        ? text + "s"
+        : text;
+    },
+    title(text) {
+      return capitalCase(text);
     }
   }
 };
 </script>
 
 <style scoped>
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-.withdraw-buttons > * {
-  margin: 0 10px;
+.draw-buttons > * {
+  margin: 10px;
 }
 </style>
