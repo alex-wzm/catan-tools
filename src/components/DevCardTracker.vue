@@ -3,12 +3,11 @@
     <h2>Development Card Tracker</h2>
     <h3>Draw cards</h3>
     <div class="draw-buttons">
-      <!-- TODO: limit min to zero -->
-      <button v-on:click="drawCard('knight')">Knight</button>
-      <button v-on:click="drawCard('victoryPoint')">Victory Point</button>
-      <button v-on:click="drawCard('roadBuilding')">Road Building</button>
-      <button v-on:click="drawCard('yearOfPlenty')">Year of Plenty</button>
-      <button v-on:click="drawCard('monopoly')">Monopoly</button>
+      <ul>
+        <li v-for="cardType in cardTypes" :key="cardType">
+          <dev-card-draw-button :cardType="cardType" v-on:draw="drawCard" v-on:undo="undoDraw" />
+        </li>
+      </ul>
     </div>
     <h3>Left in deck:</h3>
     <ul>
@@ -30,17 +29,16 @@
 </template>
 
 <script>
+import { DEFAULT_DEV_CARDS } from "../constants/defaults";
+import DevCardDrawButton from "./DevCardDrawButton";
+
 export default {
   name: "DevCardTracker",
+  components: { DevCardDrawButton },
   data() {
     return {
-      cards: {
-        knight: 14,
-        victoryPoint: 5,
-        roadBuilding: 2,
-        yearOfPlenty: 2,
-        monopoly: 2
-      },
+      cards: { ...DEFAULT_DEV_CARDS }, // shallow copy
+      cardTypes: Object.keys(DEFAULT_DEV_CARDS),
       total: 25
     };
   },
@@ -52,6 +50,12 @@ export default {
   methods: {
     drawCard(card) {
       this.cards[card] = Math.max(this.cards[card] - 1, 0);
+    },
+    undoDraw(card) {
+      this.cards[card] = Math.min(
+        this.cards[card] + 1,
+        DEFAULT_DEV_CARDS[card]
+      );
     }
   },
   filters: {
@@ -63,18 +67,7 @@ export default {
 </script>
 
 <style scoped>
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 .draw-buttons > * {
   margin: 10px;
-  border: none;
-  background-color: #eceff1;
-  font-size: 1em;
 }
 </style>
