@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h2>Withdraw cards</h2>
-    <div class="withdraw-buttons">
+    <h2>Development Card Tracker</h2>
+    <h3>Draw cards</h3>
+    <div class="draw-buttons">
       <!-- TODO: limit min to zero -->
       <button v-on:click="drawCard('knight')">Knight</button>
       <button v-on:click="drawCard('victoryPoint')">Victory Point</button>
@@ -9,7 +10,7 @@
       <button v-on:click="drawCard('yearOfPlenty')">Year of Plenty</button>
       <button v-on:click="drawCard('monopoly')">Monopoly</button>
     </div>
-    <h2>Left in deck:</h2>
+    <h3>Left in deck:</h3>
     <ul>
       <li>Knights: {{ cards.knight }}</li>
       <li>Victory Points: {{ cards.victoryPoint }}</li>
@@ -17,7 +18,7 @@
       <li>Year of Plenty: {{ cards.yearOfPlenty }}</li>
       <li>Monopoly: {{ cards.monopoly }}</li>
     </ul>
-    <h2>Odds of drawing:</h2>
+    <h3>Odds of drawing:</h3>
     <ul>
       <li>Knight: {{ cards.knight/totalCards | probability }}</li>
       <li>Victory Point: {{ cards.victoryPoint/totalCards | probability }}</li>
@@ -70,7 +71,10 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-.withdraw-buttons > * {
-  margin: 0 10px;
+.draw-buttons > * {
+  margin: 10px;
+  border: none;
+  background-color: #eceff1;
+  font-size: 1em;
 }
 </style>
