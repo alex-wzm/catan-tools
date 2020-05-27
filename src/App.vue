@@ -10,8 +10,8 @@ import Home from "./components/Home.vue";
 export default {
   name: "App",
   components: {
-    Home,
-  },
+    Home
+  }
 };
 </script>
 
@@ -23,5 +23,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+a {
+  color: #42b983;
 }
 </style>
