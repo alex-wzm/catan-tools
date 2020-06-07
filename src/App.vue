@@ -38,4 +38,10 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
+button:focus {
+  outline-color: #42b983;
+}
+button:hover {
+  color: #42b983;
+}
 </style>

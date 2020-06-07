@@ -39,5 +39,7 @@ export default {
   border: none;
   background-color: #eceff1;
   font-size: 1em;
+  padding: 8px;
+  margin: 2px;
 }
 </style>
